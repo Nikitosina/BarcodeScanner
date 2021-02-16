@@ -50,7 +50,7 @@ class BarScannerView: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
 
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         print(view.layer.bounds)
-        previewLayer.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 380)
+        previewLayer.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 390)
         previewLayer.videoGravity = .resizeAspectFill
         view.layer.addSublayer(previewLayer)
 
@@ -100,10 +100,6 @@ class BarScannerView: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
         
         let mainView = self.parent as! ViewController
         mainView.onBarcodeRecieved(barcode: code)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.captureSession.startRunning()
-        }
     }
 
     override var prefersStatusBarHidden: Bool {

@@ -30,7 +30,7 @@ class ViewController: UIViewController, BarcodeDelegate, QuantityDelegate {
     var itemsScanned = [Item]()
     var totalAmount = 0.00
 
-    // let alert = UIAlertController(title: "Товар не найден", message: "", preferredStyle: .alert)
+    let alert = UIAlertController(title: "Товар не найден", message: "", preferredStyle: .alert)
     
     lazy var container: UIView = {
         var view = UIView()
@@ -50,17 +50,24 @@ class ViewController: UIViewController, BarcodeDelegate, QuantityDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {action in
+            self.cameraView.captureSession.startRunning()
+        }))
+        
         loadItems(filename: "ItemsData.json")
         
-        tableView.delegate = self
+        // tableView.delegate = self
         tableView.dataSource = self
+        tableView.allowsSelection = false
         
         self.tableView.rowHeight = 75;
         
         barcodesScrollView.frame = CGRect(x: 10, y: self.barcodesLabel.frame.maxY + self.barcodesLabel.frame.height + 30, width: self.view.frame.width - 20, height: self.view.frame.height - 10 - self.barcodesLabel.frame.maxY + 10)
         
-        // self.alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        // self.present(alert, animated: true, completion: nil)
+        // self.view.addSubview(alert.view)
+        // alert.view.isHidden = true
+        
+        // self.myAlert.setup(superview: self.view)
         
 //         self.view.addSubview(barcodesScrollView)
 //
@@ -112,16 +119,17 @@ class ViewController: UIViewController, BarcodeDelegate, QuantityDelegate {
             itemsScanned.insert(item, at: 0)
             self.tableView.reloadData()
             
-            let index = IndexPath(row: 0, section: 0)
-            self.tableView.selectRow(at: index, animated: true, scrollPosition: UITableView.ScrollPosition.middle)
+            // let index = IndexPath(row: 0, section: 0)
+            // self.tableView.selectRow(at: index, animated: true, scrollPosition: UITableView.ScrollPosition.middle)
             self.refreshTotal()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.cameraView.captureSession.startRunning()
+            }
         } else {
-            // self.alert.message = "Штрихкод \(code) не найден!\nПопробуйте отсканировать еще раз, (или введите штрихкод вручную)"
-            // self.present(alert, animated: true, completion: nil)
+            self.alert.message = "Штрихкод \(code) не найден!\nПопробуйте отсканировать еще раз, (или введите штрихкод вручную)"
             
-            
-            // let noItem = NotFoundItem(barcode: code)
-            // noItem.showErrorAlert()
+            self.presentViewController(alertController: alert)
         }
     }
     
@@ -143,7 +151,19 @@ class ViewController: UIViewController, BarcodeDelegate, QuantityDelegate {
         for i in 0..<itemsScanned.count {
             totalAmount += itemsScanned[i].price * Double(itemsScanned[i].quantity)
         }
-        totalAmountLabel.text = String(totalAmount) + "RUB"
+        totalAmountLabel.text = String(format: "%.02f", totalAmount) + " RUB"
+    }
+    
+    func presentViewController(alertController: UIAlertController, completion: (() -> Void)? = nil) {
+        if var topController = UIApplication.shared.keyWindow?.rootViewController {
+            while let presentedViewController = topController.presentedViewController {
+                topController = presentedViewController
+            }
+
+            DispatchQueue.main.async {
+                topController.present(alertController, animated: true, completion: completion)
+            }
+        }
     }
 }
 
@@ -160,14 +180,6 @@ extension UIView {
     }
 }
 
-
-extension ViewController: UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("Tapped..")
-    }
-    
-}
 
 extension ViewController: UITableViewDataSource {
     
@@ -194,3 +206,39 @@ extension ViewController: UITableViewDataSource {
     }
     
 }
+
+
+//class CustomAlert {
+//    var vc: UIViewController?
+//    var title: UILabel
+//    var message: UILabel
+//    var view: UIView
+//    // var image:
+//
+//    init(title: String, message: String) {
+//        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
+//        // label.center = CGPoint(160, 284)
+//        label.textAlignment = .center
+//        label.text = title
+//        self.title = label
+//        self.message = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+//        self.view = UIView()
+//    }
+//
+//    func setup(vc: UIViewController) {
+//        self.vc = vc
+//        self.view = UIView(frame: CGRect(x: 100, y: 100, width: superview.frame.width / 2, height: superview.frame.height / 2))
+//        self.view.backgroundColor = .red
+//        self.view.addSubview(self.title)
+//        // self.view.isHidden = true
+//        self.vc!.addSubview(self.view)
+//        // self.superview!.bringSubviewToFront(self.view)
+//    }
+//
+//    func show() {
+//        // self.view.isHidden = false
+//        if let vc = self.vc {
+//            vc.present(self, animated: <#T##Bool#>, completion: <#T##(() -> Void)?##(() -> Void)?##() -> Void#>)
+//        }
+//    }
+//}
