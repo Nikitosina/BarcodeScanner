@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import MapKit
 
 
 protocol BarcodeDelegate {
@@ -25,7 +24,6 @@ class ViewController: UIViewController, BarcodeDelegate, QuantityDelegate {
     @IBOutlet var totalAmountLabel: UILabel!
     @IBOutlet var paymentButton: UIButton!
     var cameraView: BarScannerView!
-    var barcodesScrollView = UIScrollView()
     var barcode: Int?
     var itemsScanned = [Item]()
     var totalAmount = 0.00
@@ -35,7 +33,7 @@ class ViewController: UIViewController, BarcodeDelegate, QuantityDelegate {
     lazy var container: UIView = {
         var view = UIView()
         view.backgroundColor = .gray
-        view.frame.size = CGSize(width: barcodesScrollView.frame.width, height: barcodesScrollView.frame.height + 200)
+        // view.frame.size = CGSize(width: barcodesScrollView.frame.width, height: barcodesScrollView.frame.height + 200)
         return view
     }()
     
@@ -50,6 +48,8 @@ class ViewController: UIViewController, BarcodeDelegate, QuantityDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationController?.isNavigationBarHidden = true
+        
         self.alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {action in
             self.cameraView.captureSession.startRunning()
         }))
@@ -60,29 +60,7 @@ class ViewController: UIViewController, BarcodeDelegate, QuantityDelegate {
         tableView.dataSource = self
         tableView.allowsSelection = false
         
-        self.tableView.rowHeight = 75;
-        
-        barcodesScrollView.frame = CGRect(x: 10, y: self.barcodesLabel.frame.maxY + self.barcodesLabel.frame.height + 30, width: self.view.frame.width - 20, height: self.view.frame.height - 10 - self.barcodesLabel.frame.maxY + 10)
-        
-        // self.view.addSubview(alert.view)
-        // alert.view.isHidden = true
-        
-        // self.myAlert.setup(superview: self.view)
-        
-//         self.view.addSubview(barcodesScrollView)
-//
-//         barcodesScrollView.addSubview(container)
-//         barcodesScrollView.contentSize = container.bounds.size
-//
-//        container.addSubview(label)
-//
-//        label.frame = CGRect(x: container.frame.minX + 5, y: (container.frame.minY + container.frame.maxY) / 2, width: container.frame.width - 10, height: 50)
-//        label.textAlignment = .center
-//
-//         label.widthAnchor.constraint(equalToConstant: 250).isActive = true
-//         label.heightAnchor.constraint(equalToConstant: 100).isActive = true
-//         label.centerXAnchor.constraint(equalTo: self.container.centerXAnchor).isActive = true
-//         label.centerYAnchor.constraint(equalTo: self.container.centerYAnchor).isActive = true
+        self.tableView.rowHeight = 75
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -99,6 +77,57 @@ class ViewController: UIViewController, BarcodeDelegate, QuantityDelegate {
     @IBAction func goToScanner(_ sender: Any) {
         self.cameraView.captureSession.startRunning()
 //        present(vc, animated: true, completion: nil)
+    }
+    
+    @IBAction func goToHistoryVC(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let historyVC = storyboard.instantiateViewController(identifier: "HistoryVC")
+        
+        _ = navigationController?.pushVCFromLeft(vc: historyVC)
+        
+        // self.present(historyVC, animated:true, completion:nil)
+    }
+    
+    @IBAction func payBtnClicked(_ sender: Any) {
+        if itemsScanned.count == 0 { return }
+        
+        let success = true // TODO: Change when adding ApplePay
+        
+        if success {
+            let now = Date()
+            
+            var total = 0
+            for item in itemsScanned { total += (item.quantity * Int(item.price)) }
+            
+            let purchase = Purchase(items: itemsScanned, totalAmount: Double(total), date: now, paymentMethod: "card")
+            purchase.saveGlobally()
+            
+            let doneAlert = UIAlertController(title: "Покупка добавлена в историю", message: "Спасибо за покупку!", preferredStyle: .alert)
+            doneAlert.addAction(UIAlertAction(title: "ОК", style: .default, handler: {_ in
+                self.itemsScanned.removeAll()
+                self.tableView.reloadData()
+                self.refreshTotal()
+                self.cameraView.captureSession.startRunning()
+            }))
+            self.presentViewController(alertController: doneAlert)
+            self.cameraView.captureSession.stopRunning()
+        }
+    }
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
+    }
+    
+    func saveBill(items: [Item]) {
+        let str = items[0].name
+        let filename = getDocumentsDirectory().appendingPathComponent("output.txt")
+
+        do {
+            try str.write(to: filename, atomically: true, encoding: String.Encoding.utf8)
+        } catch {
+            print("Error occured")
+        }
     }
     
     func onBarcodeRecieved(barcode code: String) {
@@ -163,19 +192,6 @@ class ViewController: UIViewController, BarcodeDelegate, QuantityDelegate {
             DispatchQueue.main.async {
                 topController.present(alertController, animated: true, completion: completion)
             }
-        }
-    }
-}
-
-
-extension UIView {
-    func findViewController() -> UIViewController? {
-        if let nextResponder = self.next as? UIViewController {
-            return nextResponder
-        } else if let nextResponder = self.next as? UIView {
-            return nextResponder.findViewController()
-        } else {
-            return nil
         }
     }
 }

@@ -8,6 +8,15 @@
 import UIKit
 
 class PurchaseCellVC: UITableViewCell {
+    
+    @IBOutlet var dateLabel: UILabel!
+    @IBOutlet var monthLabel: UILabel!
+    @IBOutlet var yearLabel: UILabel!
+    
+    @IBOutlet var itemOneLabel: UILabel!
+    @IBOutlet var itemTwoLabel: UILabel!
+    @IBOutlet var itemThreeLabel: UILabel!
+    @IBOutlet var totalAmountLabel: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()

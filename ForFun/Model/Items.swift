@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-struct Item: Decodable {
+struct Item: Codable {
     let barcode: String
     let name: String
     let price: Double
@@ -85,7 +85,7 @@ func loadItemFromURL(link: String, barcode: String) -> Bool {
                 let itemName = object["название"] as! String
                 let itemPrice = (object["цена_розн"] as! NSString).doubleValue
                 var itemCurrency = object["валюта_название"] as! String
-                let itemImgName = "MilkaChocoGrain.jpg"
+                let itemImgName = "success_icon.png"
                 let byWeight = object["весовой"] as! String
             
                 var itemByPiece = true
