@@ -29,13 +29,19 @@ struct Purchase: Codable {
     }
     
     func saveGlobally() {
-        do {
-            if var purchases = try UserDefaults.standard.getObject(forKey: defaultsKeys.purchaces, castTo: [Purchase]?.self) {
-                purchases.insert(self, at: 0)
-            
-                try UserDefaults.standard.setObject(purchases, forKey: defaultsKeys.purchaces)
-            } else { try UserDefaults.standard.setObject([self], forKey: defaultsKeys.purchaces) }
-        } catch { print(error.localizedDescription) }
+        if UserDefaults.standard.object(forKey: defaultsKeys.purchaces) == nil {
+            do {
+                try UserDefaults.standard.setObject([self], forKey: defaultsKeys.purchaces)
+            } catch { print(error.localizedDescription) }
+        } else {
+            do {
+                if var purchases = try UserDefaults.standard.getObject(forKey: defaultsKeys.purchaces, castTo: [Purchase]?.self) {
+                    purchases.insert(self, at: 0)
+                
+                    try UserDefaults.standard.setObject(purchases, forKey: defaultsKeys.purchaces)
+                }
+            } catch { print(error.localizedDescription) }
+        }
     }
     
     func getDay() -> String {

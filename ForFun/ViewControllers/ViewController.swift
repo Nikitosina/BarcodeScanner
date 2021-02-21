@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import PassKit
 
 protocol BarcodeDelegate {
     func onBarcodeRecieved(barcode code: String)
@@ -29,6 +29,18 @@ class ViewController: UIViewController, BarcodeDelegate, QuantityDelegate {
     var totalAmount = 0.00
 
     let alert = UIAlertController(title: "Товар не найден", message: "", preferredStyle: .alert)
+    
+    private var paymentRequest : PKPaymentRequest = {
+        let request = PKPaymentRequest()
+        request.merchantIdentifier = "merchant.NikitaRat.BarcodeScanner"
+        request.supportedNetworks = [.masterCard, .visa]
+        request.supportedCountries = ["RU"]
+        request.merchantCapabilities = .capability3DS
+        request.countryCode = "RU"
+        request.currencyCode = "RUB"
+        
+        return request
+    }()
     
     lazy var container: UIView = {
         var view = UIView()
@@ -61,6 +73,8 @@ class ViewController: UIViewController, BarcodeDelegate, QuantityDelegate {
         tableView.allowsSelection = false
         
         self.tableView.rowHeight = 75
+        // self.tableView.layer.borderWidth = 2.0
+        // tableView.layer.borderColor = UIColor.red.cgColor
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -90,27 +104,15 @@ class ViewController: UIViewController, BarcodeDelegate, QuantityDelegate {
     
     @IBAction func payBtnClicked(_ sender: Any) {
         if itemsScanned.count == 0 { return }
+        self.paymentRequest.paymentSummaryItems.removeAll()
         
-        let success = true // TODO: Change when adding ApplePay
+        paymentRequest.paymentSummaryItems.append(PKPaymentSummaryItem(label: "КУПЕР", amount: NSDecimalNumber(value: self.totalAmount)))
         
-        if success {
-            let now = Date()
-            
-            var total = 0
-            for item in itemsScanned { total += (item.quantity * Int(item.price)) }
-            
-            let purchase = Purchase(items: itemsScanned, totalAmount: Double(total), date: now, paymentMethod: "card")
-            purchase.saveGlobally()
-            
-            let doneAlert = UIAlertController(title: "Покупка добавлена в историю", message: "Спасибо за покупку!", preferredStyle: .alert)
-            doneAlert.addAction(UIAlertAction(title: "ОК", style: .default, handler: {_ in
-                self.itemsScanned.removeAll()
-                self.tableView.reloadData()
-                self.refreshTotal()
-                self.cameraView.captureSession.startRunning()
-            }))
-            self.presentViewController(alertController: doneAlert)
+        let controller = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest)
+        if controller != nil {
+            controller!.delegate = self
             self.cameraView.captureSession.stopRunning()
+            present(controller!, animated: true, completion: nil)
         }
     }
     
@@ -221,6 +223,34 @@ extension ViewController: UITableViewDataSource {
         return itemCell
     }
     
+}
+
+
+extension ViewController: PKPaymentAuthorizationViewControllerDelegate {
+    func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
+        controller.dismiss(animated: true, completion: nil)
+        self.cameraView.captureSession.startRunning()
+    }
+    
+    func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController, didAuthorizePayment payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
+        completion(PKPaymentAuthorizationResult(status: .success, errors: nil))
+        
+        print(payment.token)
+        
+        let now = Date()
+        
+        var total = 0
+        for item in self.itemsScanned { total += (item.quantity * Int(item.price)) }
+        
+        let purchase = Purchase(items: itemsScanned, totalAmount: Double(total), date: now, paymentMethod: "card")
+        purchase.saveGlobally()
+        
+        self.paymentRequest.paymentSummaryItems.removeAll()
+        self.itemsScanned.removeAll()
+        self.tableView.reloadData()
+        self.refreshTotal()
+        self.cameraView.captureSession.startRunning()
+    }
 }
 
 

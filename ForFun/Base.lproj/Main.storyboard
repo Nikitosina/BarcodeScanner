@@ -118,15 +118,13 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="53O-Jy-kcw">
-                                <rect key="frame" x="209" y="818" width="185" height="48"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="53O-Jy-kcw">
+                                <rect key="frame" x="207" y="825" width="187" height="41"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="48" id="6Yn-ba-Hc2"/>
-                                    <constraint firstAttribute="width" constant="185" id="xgX-RJ-5El"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="75" id="yBi-A8-6U5"/>
+                                    <constraint firstAttribute="height" constant="41" id="6Yn-ba-Hc2"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="Оплатить"/>
+                                <state key="normal" image="ApplePay-Button_2x"/>
                                 <connections>
                                     <action selector="goToScanner:" destination="BYZ-38-t0r" eventType="touchUpInside" id="OVr-MB-pqW"/>
                                     <action selector="payBtnClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XEb-We-Cok"/>
@@ -167,12 +165,13 @@
                             <constraint firstItem="7kp-eW-LnY" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="6Hp-vt-AeB"/>
                             <constraint firstItem="qtA-tq-38h" firstAttribute="top" secondItem="ut7-io-aBH" secondAttribute="bottom" constant="10" id="8Eg-E4-8pU"/>
                             <constraint firstItem="qon-aw-H9v" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Hq6-7Z-NVx"/>
-                            <constraint firstItem="53O-Jy-kcw" firstAttribute="top" secondItem="qtA-tq-38h" secondAttribute="bottom" constant="10" id="J3w-Ol-rNd"/>
+                            <constraint firstItem="53O-Jy-kcw" firstAttribute="top" secondItem="qtA-tq-38h" secondAttribute="bottom" constant="17" id="J3w-Ol-rNd"/>
                             <constraint firstItem="qon-aw-H9v" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="LTE-Aq-Eba"/>
                             <constraint firstItem="ut7-io-aBH" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Nm4-ub-Kbz"/>
                             <constraint firstItem="WJu-ch-q8Q" firstAttribute="top" secondItem="qtA-tq-38h" secondAttribute="bottom" constant="10" id="TFS-OU-VbL"/>
                             <constraint firstItem="qtA-tq-38h" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="-54" id="YZw-Zx-ppo"/>
                             <constraint firstItem="ut7-io-aBH" firstAttribute="top" secondItem="7kp-eW-LnY" secondAttribute="bottom" constant="10" id="YyO-Sz-mfQ"/>
+                            <constraint firstItem="53O-Jy-kcw" firstAttribute="leading" secondItem="qtA-tq-38h" secondAttribute="centerX" id="cf7-j4-OMk"/>
                             <constraint firstItem="qtA-tq-38h" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="ebl-8u-wJ7"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="qtA-tq-38h" secondAttribute="trailing" constant="20" id="erm-by-oHQ"/>
                             <constraint firstItem="7kp-eW-LnY" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="haw-4N-lxh"/>
@@ -403,12 +402,27 @@
             </objects>
             <point key="canvasLocation" x="2582.608695652174" y="92.410714285714278"/>
         </scene>
+        <!--Purchase DetailsVC-->
+        <scene sceneID="96C-cy-eql">
+            <objects>
+                <viewController id="IPS-p5-wm3" customClass="PurchaseDetailsVC" customModule="ForFun" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="b9V-bR-W65">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="wAr-tA-8zW"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="f55-T7-uDy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3480" y="92"/>
+        </scene>
         <!--Bar Scanner View-->
         <scene sceneID="VmA-hL-4dk">
             <objects>
                 <viewController storyboardIdentifier="camera" useStoryboardIdentifierAsRestorationIdentifier="YES" id="bHs-gj-c9v" customClass="BarScannerView" customModule="ForFun" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Lve-cO-k6v">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="467.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="467"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="LgJ-Jc-bYY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -438,6 +452,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="ApplePay-Button_2x" width="51" height="24"/>
         <image name="bills_history" width="512" height="512"/>
         <systemColor name="opaqueSeparatorColor">
             <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

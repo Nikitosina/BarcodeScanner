@@ -26,6 +26,7 @@
 		DDCA668525DBFF2B004D76C2 /* PurchaseCellVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCA668425DBFF2B004D76C2 /* PurchaseCellVC.swift */; };
 		DDCA668825DD13EA004D76C2 /* Purchase.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCA668725DD13EA004D76C2 /* Purchase.swift */; };
 		DDCA668B25DD47BE004D76C2 /* error_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCA668A25DD47BE004D76C2 /* error_icon.png */; };
+		DDCA668F25DFD28B004D76C2 /* PurchaseDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCA668E25DFD28A004D76C2 /* PurchaseDetailsVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		DD17182225B2F21C0025664C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DD17182B25B300170025664C /* BarScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarScannerView.swift; sourceTree = "<group>"; };
 		DD76C15025D15F0F008B9DE4 /* TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableView.swift; sourceTree = "<group>"; };
+		DDAFD09D25E13B2000A80E5C /* ForFun.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ForFun.entitlements; sourceTree = "<group>"; };
 		DDC411CD25B7FEA9006F9C4E /* Items.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
 		DDC411D825B81CE2006F9C4E /* ItemCellVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCellVC.swift; sourceTree = "<group>"; };
 		DDC411DE25B82D59006F9C4E /* ItemsData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ItemsData.json; sourceTree = "<group>"; };
@@ -50,6 +52,7 @@
 		DDCA668425DBFF2B004D76C2 /* PurchaseCellVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseCellVC.swift; sourceTree = "<group>"; };
 		DDCA668725DD13EA004D76C2 /* Purchase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Purchase.swift; sourceTree = "<group>"; };
 		DDCA668A25DD47BE004D76C2 /* error_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = error_icon.png; sourceTree = "<group>"; };
+		DDCA668E25DFD28A004D76C2 /* PurchaseDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseDetailsVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +85,7 @@
 		DD17181325B2F21B0025664C /* ForFun */ = {
 			isa = PBXGroup;
 			children = (
+				DDAFD09D25E13B2000A80E5C /* ForFun.entitlements */,
 				DDC411DC25B82926006F9C4E /* Resources */,
 				DDC411CC25B7FE47006F9C4E /* Model */,
 				DD17182925B2FFD10025664C /* ViewControllers */,
@@ -107,6 +111,7 @@
 				DD76C15025D15F0F008B9DE4 /* TableView.swift */,
 				DDCA667825DBB953004D76C2 /* HistoryVC.swift */,
 				DDCA668425DBFF2B004D76C2 /* PurchaseCellVC.swift */,
+				DDCA668E25DFD28A004D76C2 /* PurchaseDetailsVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -209,6 +214,7 @@
 				DD17181925B2F21B0025664C /* ViewController.swift in Sources */,
 				DDCA668225DBF3D1004D76C2 /* Extensions.swift in Sources */,
 				DDC411CE25B7FEA9006F9C4E /* Items.swift in Sources */,
+				DDCA668F25DFD28B004D76C2 /* PurchaseDetailsVC.swift in Sources */,
 				DDCA668525DBFF2B004D76C2 /* PurchaseCellVC.swift in Sources */,
 				DD17182C25B300170025664C /* BarScannerView.swift in Sources */,
 				DD76C15125D15F0F008B9DE4 /* TableView.swift in Sources */,
@@ -362,6 +368,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ForFun/ForFun.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = WPVJY5G9UM;
 				INFOPLIST_FILE = ForFun/Info.plist;
@@ -382,6 +389,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ForFun/ForFun.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = WPVJY5G9UM;
 				INFOPLIST_FILE = ForFun/Info.plist;

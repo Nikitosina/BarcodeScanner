@@ -34,7 +34,8 @@ class HistoryVC: UIViewController {
 extension HistoryVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return purchases.count
+        if purchases != nil { return purchases.count }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -82,6 +83,10 @@ extension HistoryVC: UITableViewDataSource, UITableViewDelegate {
             
             present(alert, animated: true, completion: nil)
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
     }
     
 }
