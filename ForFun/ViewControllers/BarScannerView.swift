@@ -49,8 +49,9 @@ class BarScannerView: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
         }
 
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        print(view.layer.bounds)
-        previewLayer.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 390)
+        // print(viewController?.containerView.frame)
+        previewLayer.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 400)
+        print(previewLayer.frame)
         previewLayer.videoGravity = .resizeAspectFill
         view.layer.addSublayer(previewLayer)
 

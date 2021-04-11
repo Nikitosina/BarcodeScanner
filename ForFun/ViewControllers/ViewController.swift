@@ -19,10 +19,11 @@ protocol QuantityDelegate {
 
 class ViewController: UIViewController, BarcodeDelegate, QuantityDelegate {
 
-    @IBOutlet weak var barcodesLabel: UILabel!
     @IBOutlet var tableView: UITableView!
     @IBOutlet var totalAmountLabel: UILabel!
     @IBOutlet var paymentButton: UIButton!
+    @IBOutlet var containerView: UIView!
+    @IBOutlet var paymentBtn: UIButton!
     var cameraView: BarScannerView!
     var barcode: Int?
     var itemsScanned = [Item]()
@@ -65,6 +66,8 @@ class ViewController: UIViewController, BarcodeDelegate, QuantityDelegate {
         self.alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {action in
             self.cameraView.captureSession.startRunning()
         }))
+        
+        self.paymentBtn.layer.cornerRadius = 5
         
         loadItems(filename: "ItemsData.json")
         
@@ -223,6 +226,22 @@ extension ViewController: UITableViewDataSource {
         return itemCell
     }
     
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            tableView.beginUpdates()
+            
+            self.itemsScanned.remove(at: indexPath.row)
+            self.refreshTotal()
+            tableView.deleteRows(at: [indexPath], with: .left)
+            
+            tableView.endUpdates()
+        }
+    }
+    
 }
 
 
@@ -249,7 +268,12 @@ extension ViewController: PKPaymentAuthorizationViewControllerDelegate {
         self.itemsScanned.removeAll()
         self.tableView.reloadData()
         self.refreshTotal()
-        self.cameraView.captureSession.startRunning()
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let purchaseDetailsVC = storyboard.instantiateViewController(identifier: "purchaseDetailsVC")
+        
+        navigationController?.pushViewController(purchaseDetailsVC, animated: true)
+        // self.cameraView.captureSession.startRunning()
     }
 }
 

@@ -28,7 +28,7 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>GIVE ME YOUR CAMERA</string>
+	<string>Нам нужен доступ к камере, чтобы считывать штрихкоды</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
